@@ -1,0 +1,3271 @@
+{
+    "type": "database",
+    "name": "build_new_modern_database",
+    "objects": [
+        {
+            "type": "table",
+            "database": null,
+            "name": "ai_text_suggestions",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE ai_text_suggestions (\n  id                           INTEGER PRIMARY KEY AUTOINCREMENT,\n  part_number                  TEXT NOT NULL REFERENCES products(part_number) ON DELETE CASCADE,\n  workflow_id                  TEXT NOT NULL CHECK (workflow_id IN ('title','description','tide')),\n  tone                         TEXT CHECK (tone IN ('default','playful','formal','persuasive','conversational')),\n  target_language              TEXT DEFAULT 'en',\n  attribute_separator          TEXT DEFAULT ' - ',\n  attribute_order_json         TEXT,\n  request_product_info         TEXT NOT NULL,\n  request_raw_json             TEXT,\n  response_title_text          TEXT,\n  response_title_score         REAL,\n  response_title_change_summary TEXT,\n  response_desc_text           TEXT,\n  response_desc_score          REAL,\n  response_desc_change_summary TEXT,\n  response_attributes_json     TEXT,\n  response_metadata_json       TEXT,\n  status                       TEXT DEFAULT 'ok',\n  error_message                TEXT,\n  created_at                   TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "part_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES products(part_number) ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "workflow_id",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (workflow_id IN ('title','description','tide'))"
+                        }
+                    ]
+                },
+                {
+                    "name": "tone",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (tone IN ('default','playful','formal','persuasive','conversational'))"
+                        }
+                    ]
+                },
+                {
+                    "name": "target_language",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 'en'"
+                        }
+                    ]
+                },
+                {
+                    "name": "attribute_separator",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT ' - '"
+                        }
+                    ]
+                },
+                {
+                    "name": "attribute_order_json",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "request_product_info",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "request_raw_json",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "response_title_text",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "response_title_score",
+                    "type": "REAL"
+                },
+                {
+                    "name": "response_title_change_summary",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "response_desc_text",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "response_desc_score",
+                    "type": "REAL"
+                },
+                {
+                    "name": "response_desc_change_summary",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "response_attributes_json",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "response_metadata_json",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "status",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 'ok'"
+                        }
+                    ]
+                },
+                {
+                    "name": "error_message",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "ai_title_examples",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE ai_title_examples (\n  id                       INTEGER PRIMARY KEY AUTOINCREMENT,\n  category                 TEXT NOT NULL,\n  title_format             TEXT NOT NULL,\n  product_info_json        TEXT NOT NULL,\n  final_product_info_json  TEXT NOT NULL,\n  UNIQUE (category, title_format, product_info_json)\n)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "category",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "title_format",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "product_info_json",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "final_product_info_json",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "UNIQUE",
+                    "definition": "UNIQUE (category, title_format, product_info_json)\n"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "attribute_groups",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE attribute_groups (\n  group_id   INTEGER PRIMARY KEY,\n  name       TEXT NOT NULL,\n  sort_order INTEGER DEFAULT 0\n)",
+            "columns": [
+                {
+                    "name": "group_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "sort_order",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 0\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+                [
+                    1,
+                    "General",
+                    10
+                ],
+                [
+                    2,
+                    "Apparel",
+                    20
+                ],
+                [
+                    3,
+                    "Electronics",
+                    30
+                ],
+                [
+                    4,
+                    "Dimensions",
+                    40
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "attribute_options",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE attribute_options (\n  option_id    INTEGER PRIMARY KEY,\n  attribute_id INTEGER NOT NULL REFERENCES attributes(attribute_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  value        TEXT NOT NULL,\n  label        TEXT,\n  sort_order   INTEGER DEFAULT 0,\n  UNIQUE(attribute_id, value)\n)",
+            "columns": [
+                {
+                    "name": "option_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "attribute_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES attributes(attribute_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "value",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "label",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "sort_order",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 0"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "UNIQUE",
+                    "definition": "UNIQUE(attribute_id, value)\n"
+                }
+            ],
+            "rows": [
+                [
+                    1,
+                    1,
+                    "Black",
+                    "Black",
+                    1
+                ],
+                [
+                    2,
+                    1,
+                    "White",
+                    "White",
+                    2
+                ],
+                [
+                    3,
+                    1,
+                    "Grey",
+                    "Grey",
+                    3
+                ],
+                [
+                    4,
+                    1,
+                    "Silver",
+                    "Silver",
+                    4
+                ],
+                [
+                    5,
+                    1,
+                    "Gold",
+                    "Gold",
+                    5
+                ],
+                [
+                    6,
+                    1,
+                    "Red",
+                    "Red",
+                    6
+                ],
+                [
+                    7,
+                    1,
+                    "Blue",
+                    "Blue",
+                    7
+                ],
+                [
+                    8,
+                    1,
+                    "Green",
+                    "Green",
+                    8
+                ],
+                [
+                    9,
+                    1,
+                    "Yellow",
+                    "Yellow",
+                    9
+                ],
+                [
+                    10,
+                    1,
+                    "Orange",
+                    "Orange",
+                    10
+                ],
+                [
+                    11,
+                    1,
+                    "Purple",
+                    "Purple",
+                    11
+                ],
+                [
+                    12,
+                    1,
+                    "Pink",
+                    "Pink",
+                    12
+                ],
+                [
+                    13,
+                    1,
+                    "Brown",
+                    "Brown",
+                    13
+                ],
+                [
+                    14,
+                    1,
+                    "Beige",
+                    "Beige",
+                    14
+                ],
+                [
+                    15,
+                    1,
+                    "Multi",
+                    "Multi",
+                    99
+                ],
+                [
+                    16,
+                    2,
+                    "XXS",
+                    "XXS",
+                    1
+                ],
+                [
+                    17,
+                    2,
+                    "XS",
+                    "XS",
+                    2
+                ],
+                [
+                    18,
+                    2,
+                    "S",
+                    "S",
+                    3
+                ],
+                [
+                    19,
+                    2,
+                    "M",
+                    "M",
+                    4
+                ],
+                [
+                    20,
+                    2,
+                    "L",
+                    "L",
+                    5
+                ],
+                [
+                    21,
+                    2,
+                    "XL",
+                    "XL",
+                    6
+                ],
+                [
+                    22,
+                    2,
+                    "XXL",
+                    "XXL",
+                    7
+                ],
+                [
+                    23,
+                    2,
+                    "3XL",
+                    "3XL",
+                    8
+                ],
+                [
+                    24,
+                    2,
+                    "4XL",
+                    "4XL",
+                    9
+                ],
+                [
+                    25,
+                    2,
+                    "6",
+                    "6",
+                    20
+                ],
+                [
+                    26,
+                    2,
+                    "8",
+                    "8",
+                    21
+                ],
+                [
+                    27,
+                    2,
+                    "10",
+                    "10",
+                    22
+                ],
+                [
+                    28,
+                    2,
+                    "12",
+                    "12",
+                    23
+                ],
+                [
+                    29,
+                    2,
+                    "14",
+                    "14",
+                    24
+                ],
+                [
+                    30,
+                    2,
+                    "16",
+                    "16",
+                    25
+                ],
+                [
+                    31,
+                    2,
+                    "18",
+                    "18",
+                    26
+                ],
+                [
+                    32,
+                    2,
+                    "20",
+                    "20",
+                    27
+                ],
+                [
+                    33,
+                    3,
+                    "Cotton",
+                    "Cotton",
+                    1
+                ],
+                [
+                    34,
+                    3,
+                    "Polyester",
+                    "Polyester",
+                    2
+                ],
+                [
+                    35,
+                    3,
+                    "Leather",
+                    "Leather",
+                    3
+                ],
+                [
+                    36,
+                    3,
+                    "Wool",
+                    "Wool",
+                    4
+                ],
+                [
+                    37,
+                    3,
+                    "Silk",
+                    "Silk",
+                    5
+                ],
+                [
+                    38,
+                    3,
+                    "Nylon",
+                    "Nylon",
+                    6
+                ],
+                [
+                    39,
+                    3,
+                    "Linen",
+                    "Linen",
+                    7
+                ],
+                [
+                    40,
+                    3,
+                    "Acrylic",
+                    "Acrylic",
+                    8
+                ],
+                [
+                    41,
+                    3,
+                    "Rubber",
+                    "Rubber",
+                    9
+                ],
+                [
+                    42,
+                    3,
+                    "Plastic",
+                    "Plastic",
+                    10
+                ],
+                [
+                    43,
+                    3,
+                    "Wood",
+                    "Wood",
+                    11
+                ],
+                [
+                    44,
+                    3,
+                    "Glass",
+                    "Glass",
+                    12
+                ],
+                [
+                    45,
+                    3,
+                    "Stainless Steel",
+                    "Stainless Steel",
+                    13
+                ],
+                [
+                    46,
+                    3,
+                    "Aluminium",
+                    "Aluminium",
+                    14
+                ],
+                [
+                    47,
+                    4,
+                    "0-3",
+                    "0–3 years",
+                    1
+                ],
+                [
+                    48,
+                    4,
+                    "3-5",
+                    "3–5 years",
+                    2
+                ],
+                [
+                    49,
+                    4,
+                    "5-7",
+                    "5–7 years",
+                    3
+                ],
+                [
+                    50,
+                    4,
+                    "8-12",
+                    "8–12 years",
+                    4
+                ],
+                [
+                    51,
+                    4,
+                    "13+",
+                    "13+ years",
+                    5
+                ],
+                [
+                    52,
+                    4,
+                    "Adult",
+                    "Adult",
+                    6
+                ],
+                [
+                    53,
+                    4,
+                    "All Ages",
+                    "All Ages",
+                    7
+                ],
+                [
+                    54,
+                    5,
+                    "Unisex",
+                    "Unisex",
+                    1
+                ],
+                [
+                    55,
+                    5,
+                    "Men",
+                    "Men",
+                    2
+                ],
+                [
+                    56,
+                    5,
+                    "Women",
+                    "Women",
+                    3
+                ],
+                [
+                    57,
+                    5,
+                    "Kids",
+                    "Kids",
+                    4
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "attributes",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE attributes (\n  attribute_id INTEGER PRIMARY KEY,\n  code         TEXT NOT NULL UNIQUE,\n  label        TEXT NOT NULL,\n  data_type    TEXT NOT NULL CHECK (data_type IN ('text','int','decimal','bool','date','enum','json')),\n  unit_code    TEXT,\n  is_variant   INTEGER NOT NULL DEFAULT 0 CHECK (is_variant IN (0,1)),\n  is_required  INTEGER NOT NULL DEFAULT 0 CHECK (is_required IN (0,1)),\n  is_facet     INTEGER NOT NULL DEFAULT 1 CHECK (is_facet IN (0,1)),\n  group_id     INTEGER REFERENCES attribute_groups(group_id) ON UPDATE CASCADE ON DELETE SET NULL,\n  sort_order   INTEGER DEFAULT 0,\n  created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)",
+            "columns": [
+                {
+                    "name": "attribute_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "code",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "label",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "data_type",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (data_type IN ('text','int','decimal','bool','date','enum','json'))"
+                        }
+                    ]
+                },
+                {
+                    "name": "unit_code",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "is_variant",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 0 "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (is_variant IN (0,1))"
+                        }
+                    ]
+                },
+                {
+                    "name": "is_required",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 0 "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (is_required IN (0,1))"
+                        }
+                    ]
+                },
+                {
+                    "name": "is_facet",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 1 "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (is_facet IN (0,1))"
+                        }
+                    ]
+                },
+                {
+                    "name": "group_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES attribute_groups(group_id) ON UPDATE CASCADE ON DELETE SET NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "sort_order",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 0"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+                [
+                    1,
+                    "color",
+                    "Color",
+                    "enum",
+                    null,
+                    1,
+                    0,
+                    1,
+                    1,
+                    10,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    2,
+                    "size",
+                    "Size",
+                    "enum",
+                    null,
+                    1,
+                    0,
+                    1,
+                    2,
+                    20,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    3,
+                    "material",
+                    "Material",
+                    "enum",
+                    null,
+                    0,
+                    0,
+                    1,
+                    1,
+                    30,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    4,
+                    "age_range",
+                    "Age Range",
+                    "enum",
+                    null,
+                    0,
+                    0,
+                    1,
+                    1,
+                    40,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    5,
+                    "gender",
+                    "Gender",
+                    "enum",
+                    null,
+                    0,
+                    0,
+                    1,
+                    2,
+                    50,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    6,
+                    "capacity_l",
+                    "Capacity (L)",
+                    "decimal",
+                    "L",
+                    0,
+                    0,
+                    1,
+                    3,
+                    10,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    7,
+                    "capacity_gb",
+                    "Capacity (GB)",
+                    "int",
+                    "GB",
+                    0,
+                    0,
+                    1,
+                    3,
+                    20,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    8,
+                    "weight_kg",
+                    "Weight (kg)",
+                    "decimal",
+                    "kg",
+                    0,
+                    0,
+                    1,
+                    3,
+                    30,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    9,
+                    "height_cm",
+                    "Height (cm)",
+                    "decimal",
+                    "cm",
+                    0,
+                    0,
+                    0,
+                    4,
+                    10,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    10,
+                    "width_cm",
+                    "Width (cm)",
+                    "decimal",
+                    "cm",
+                    0,
+                    0,
+                    0,
+                    4,
+                    20,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    11,
+                    "depth_cm",
+                    "Depth (cm)",
+                    "decimal",
+                    "cm",
+                    0,
+                    0,
+                    0,
+                    4,
+                    30,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "brands",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE brands (\n  brand_id   INTEGER PRIMARY KEY,\n  brand_name TEXT NOT NULL UNIQUE\n)",
+            "columns": [
+                {
+                    "name": "brand_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "brand_name",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "categories",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE categories (\n  category_id INTEGER PRIMARY KEY,\n  code        TEXT UNIQUE,\n  name        TEXT NOT NULL,\n  parent_id   INTEGER REFERENCES categories(category_id) ON UPDATE CASCADE ON DELETE SET NULL,\n  gcc_code    TEXT,\n  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)",
+            "columns": [
+                {
+                    "name": "category_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "code",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "parent_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES categories(category_id) ON UPDATE CASCADE ON DELETE SET NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "gcc_code",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+                [
+                    1,
+                    "APPAREL",
+                    "Apparel",
+                    null,
+                    null,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    2,
+                    "ELECTRONICS",
+                    "Electronics",
+                    null,
+                    null,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ],
+                [
+                    3,
+                    "HOME_APPLIANCE",
+                    "Home Appliance",
+                    null,
+                    null,
+                    "2025-09-07 03:24:38",
+                    "2025-09-07 03:24:38"
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "category_attributes",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE category_attributes (\n  category_id  INTEGER NOT NULL REFERENCES categories(category_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  attribute_id INTEGER NOT NULL REFERENCES attributes(attribute_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  is_required  INTEGER NOT NULL DEFAULT 0 CHECK (is_required IN (0,1)),\n  sort_order   INTEGER DEFAULT 0,\n  PRIMARY KEY (category_id, attribute_id)\n)",
+            "columns": [
+                {
+                    "name": "category_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES categories(category_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "attribute_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES attributes(attribute_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "is_required",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 0 "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (is_required IN (0,1))"
+                        }
+                    ]
+                },
+                {
+                    "name": "sort_order",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 0"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "PRIMARY KEY (category_id, attribute_id)\n"
+                }
+            ],
+            "rows": [
+                [
+                    1,
+                    1,
+                    0,
+                    10
+                ],
+                [
+                    1,
+                    2,
+                    0,
+                    20
+                ],
+                [
+                    1,
+                    3,
+                    0,
+                    30
+                ],
+                [
+                    1,
+                    5,
+                    0,
+                    40
+                ],
+                [
+                    2,
+                    1,
+                    0,
+                    10
+                ],
+                [
+                    2,
+                    7,
+                    0,
+                    20
+                ],
+                [
+                    2,
+                    8,
+                    0,
+                    30
+                ],
+                [
+                    3,
+                    1,
+                    0,
+                    10
+                ],
+                [
+                    3,
+                    6,
+                    0,
+                    20
+                ],
+                [
+                    3,
+                    8,
+                    0,
+                    30
+                ],
+                [
+                    3,
+                    9,
+                    0,
+                    40
+                ],
+                [
+                    3,
+                    10,
+                    0,
+                    50
+                ],
+                [
+                    3,
+                    11,
+                    0,
+                    60
+                ]
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "dimensions",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE dimensions (\n  dimension_id            INTEGER PRIMARY KEY,\n  product_height_cm       REAL NOT NULL CHECK (product_height_cm >= 0),\n  product_width_cm        REAL NOT NULL CHECK (product_width_cm  >= 0),\n  product_depth_cm        REAL NOT NULL CHECK (product_depth_cm  >= 0),\n  package_height_cm       REAL CHECK (package_height_cm  >= 0),\n  package_width_cm        REAL CHECK (package_width_cm   >= 0),\n  package_depth_cm        REAL CHECK (package_depth_cm   >= 0),\n  package_gross_weight_kg REAL CHECK (package_gross_weight_kg >= 0)\n)",
+            "columns": [
+                {
+                    "name": "dimension_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "product_height_cm",
+                    "type": "REAL",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (product_height_cm >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "product_width_cm",
+                    "type": "REAL",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (product_width_cm  >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "product_depth_cm",
+                    "type": "REAL",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (product_depth_cm  >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "package_height_cm",
+                    "type": "REAL",
+                    "constraints": [
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (package_height_cm  >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "package_width_cm",
+                    "type": "REAL",
+                    "constraints": [
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (package_width_cm   >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "package_depth_cm",
+                    "type": "REAL",
+                    "constraints": [
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (package_depth_cm   >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "package_gross_weight_kg",
+                    "type": "REAL",
+                    "constraints": [
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (package_gross_weight_kg >= 0)\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "invoice_line_items",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE invoice_line_items (\n  line_item_id     INTEGER PRIMARY KEY AUTOINCREMENT,\n  invoice_id       INTEGER NOT NULL REFERENCES invoices(invoice_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  product_sku      TEXT NOT NULL,\n  description      TEXT,\n  quantity_billed  INTEGER NOT NULL CHECK (quantity_billed >= 0),\n  unit_price       NUMERIC NOT NULL CHECK (unit_price >= 0),\n  currency_code    CHAR(3),\n  total_price      NUMERIC GENERATED ALWAYS AS (quantity_billed * unit_price) STORED\n)",
+            "columns": [
+                {
+                    "name": "line_item_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "invoice_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES invoices(invoice_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "product_sku",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "description",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "quantity_billed",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (quantity_billed >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "unit_price",
+                    "type": "NUMERIC",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (unit_price >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "currency_code",
+                    "type": "CHAR"
+                },
+                {
+                    "name": "total_price",
+                    "type": "NUMERIC",
+                    "constraints": [
+                        {
+                            "type": "GENERATED",
+                            "definition": "GENERATED ALWAYS AS (quantity_billed * unit_price) STORED\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "invoices",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE invoices (\n  invoice_id          INTEGER PRIMARY KEY AUTOINCREMENT,\n  vendor_id           INTEGER NOT NULL REFERENCES vendors(vendor_id) ON UPDATE CASCADE ON DELETE RESTRICT,\n  po_id               INTEGER REFERENCES purchase_orders(po_id) ON UPDATE CASCADE ON DELETE SET NULL,\n  invoice_number      TEXT UNIQUE NOT NULL,\n  invoice_date        DATE NOT NULL,\n  due_date            DATE,\n  currency_code       CHAR(3),\n  subtotal_amount     NUMERIC NOT NULL,\n  tax_amount          NUMERIC,\n  vat_number          TEXT,\n  total_amount        NUMERIC NOT NULL,\n  payment_status      TEXT DEFAULT 'Unpaid',\n  payment_method      TEXT,\n  remittance_reference TEXT,\n  created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)",
+            "columns": [
+                {
+                    "name": "invoice_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES vendors(vendor_id) ON UPDATE CASCADE ON DELETE RESTRICT"
+                        }
+                    ]
+                },
+                {
+                    "name": "po_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES purchase_orders(po_id) ON UPDATE CASCADE ON DELETE SET NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "invoice_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "invoice_date",
+                    "type": "DATE",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "due_date",
+                    "type": "DATE"
+                },
+                {
+                    "name": "currency_code",
+                    "type": "CHAR"
+                },
+                {
+                    "name": "subtotal_amount",
+                    "type": "NUMERIC",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "tax_amount",
+                    "type": "NUMERIC"
+                },
+                {
+                    "name": "vat_number",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "total_amount",
+                    "type": "NUMERIC",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "payment_status",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 'Unpaid'"
+                        }
+                    ]
+                },
+                {
+                    "name": "payment_method",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "remittance_reference",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "pack_contents",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE pack_contents (\n  pack_content_id  INTEGER PRIMARY KEY AUTOINCREMENT,\n  part_number      TEXT NOT NULL REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE,\n  item_description TEXT NOT NULL\n)",
+            "columns": [
+                {
+                    "name": "pack_content_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "part_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "item_description",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "payments",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE payments (\n  payment_id           INTEGER PRIMARY KEY AUTOINCREMENT,\n  invoice_id           INTEGER NOT NULL REFERENCES invoices(invoice_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  payment_date         DATE NOT NULL,\n  amount_paid          NUMERIC NOT NULL CHECK (amount_paid >= 0),\n  currency_code        CHAR(3),\n  payment_method       TEXT,\n  transaction_reference TEXT,\n  payer_account        TEXT,\n  payment_status       TEXT DEFAULT 'Completed'\n)",
+            "columns": [
+                {
+                    "name": "payment_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "invoice_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES invoices(invoice_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "payment_date",
+                    "type": "DATE",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "amount_paid",
+                    "type": "NUMERIC",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (amount_paid >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "currency_code",
+                    "type": "CHAR"
+                },
+                {
+                    "name": "payment_method",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "transaction_reference",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "payer_account",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "payment_status",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 'Completed'\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "po_line_items",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE po_line_items (\n  line_item_id     INTEGER PRIMARY KEY AUTOINCREMENT,\n  po_id            INTEGER NOT NULL REFERENCES purchase_orders(po_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  product_sku      TEXT NOT NULL,\n  description      TEXT,\n  quantity_ordered INTEGER NOT NULL CHECK (quantity_ordered >= 0),\n  unit_price       NUMERIC NOT NULL CHECK (unit_price >= 0),\n  currency_code    CHAR(3),\n  total_price      NUMERIC GENERATED ALWAYS AS (quantity_ordered * unit_price) STORED\n)",
+            "columns": [
+                {
+                    "name": "line_item_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "po_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES purchase_orders(po_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "product_sku",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "description",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "quantity_ordered",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (quantity_ordered >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "unit_price",
+                    "type": "NUMERIC",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (unit_price >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "currency_code",
+                    "type": "CHAR"
+                },
+                {
+                    "name": "total_price",
+                    "type": "NUMERIC",
+                    "constraints": [
+                        {
+                            "type": "GENERATED",
+                            "definition": "GENERATED ALWAYS AS (quantity_ordered * unit_price) STORED\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "prices",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE prices (\n  price_id           INTEGER PRIMARY KEY AUTOINCREMENT,\n  part_number        TEXT NOT NULL REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE,\n  currency_code      CHAR(3) DEFAULT 'AUD',\n  msrp               NUMERIC,\n  rrp                NUMERIC,\n  retail_price       NUMERIC NOT NULL CHECK (retail_price >= 0),\n  discount_price     NUMERIC,\n  cost_price_ex_tax  NUMERIC,\n  effective_date     DATE NOT NULL,\n  created_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  UNIQUE (part_number, effective_date)\n)",
+            "columns": [
+                {
+                    "name": "price_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "part_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "currency_code",
+                    "type": "CHAR",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 'AUD'"
+                        }
+                    ]
+                },
+                {
+                    "name": "msrp",
+                    "type": "NUMERIC"
+                },
+                {
+                    "name": "rrp",
+                    "type": "NUMERIC"
+                },
+                {
+                    "name": "retail_price",
+                    "type": "NUMERIC",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (retail_price >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "discount_price",
+                    "type": "NUMERIC"
+                },
+                {
+                    "name": "cost_price_ex_tax",
+                    "type": "NUMERIC"
+                },
+                {
+                    "name": "effective_date",
+                    "type": "DATE",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "UNIQUE",
+                    "definition": "UNIQUE (part_number, effective_date)\n"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "product_attribute_values",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE product_attribute_values (\n  part_number   TEXT NOT NULL REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE,\n  attribute_id  INTEGER NOT NULL REFERENCES attributes(attribute_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  value_text    TEXT,\n  value_int     INTEGER,\n  value_decimal NUMERIC,\n  value_bool    INTEGER CHECK (value_bool IN (0,1)),\n  value_date    DATE,\n  value_json    TEXT,\n  option_id     INTEGER REFERENCES attribute_options(option_id) ON UPDATE CASCADE ON DELETE SET NULL,\n  unit_code     TEXT,\n  created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  PRIMARY KEY (part_number, attribute_id),\n  CHECK (\n    (value_text IS NOT NULL) +\n    (value_int IS NOT NULL) +\n    (value_decimal IS NOT NULL) +\n    (value_bool IS NOT NULL) +\n    (value_date IS NOT NULL) +\n    (value_json IS NOT NULL) +\n    (option_id IS NOT NULL) = 1\n  )\n)",
+            "columns": [
+                {
+                    "name": "part_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "attribute_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES attributes(attribute_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "value_text",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "value_int",
+                    "type": "INTEGER"
+                },
+                {
+                    "name": "value_decimal",
+                    "type": "NUMERIC"
+                },
+                {
+                    "name": "value_bool",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (value_bool IN (0,1))"
+                        }
+                    ]
+                },
+                {
+                    "name": "value_date",
+                    "type": "DATE"
+                },
+                {
+                    "name": "value_json",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "option_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES attribute_options(option_id) ON UPDATE CASCADE ON DELETE SET NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "unit_code",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "PRIMARY KEY (part_number, attribute_id)"
+                },
+                {
+                    "type": "CHECK",
+                    "definition": "CHECK (\n    (value_text IS NOT NULL) +\n    (value_int IS NOT NULL) +\n    (value_decimal IS NOT NULL) +\n    (value_bool IS NOT NULL) +\n    (value_date IS NOT NULL) +\n    (value_json IS NOT NULL) +\n    (option_id IS NOT NULL) = 1\n  )\n"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "product_categories",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE product_categories (\n  part_number TEXT NOT NULL REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE,\n  category_id INTEGER NOT NULL REFERENCES categories(category_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  PRIMARY KEY (part_number, category_id)\n)",
+            "columns": [
+                {
+                    "name": "part_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "category_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES categories(category_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "PRIMARY KEY (part_number, category_id)\n"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "product_media",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE product_media (\n  media_id    INTEGER PRIMARY KEY,\n  part_number TEXT NOT NULL REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE,\n  media_type  TEXT NOT NULL CHECK (media_type IN ('image','video','youtube')),\n  url         TEXT NOT NULL,\n  alt_text    TEXT,\n  position    INTEGER DEFAULT 0,\n  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)",
+            "columns": [
+                {
+                    "name": "media_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "part_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "media_type",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (media_type IN ('image','video','youtube'))"
+                        }
+                    ]
+                },
+                {
+                    "name": "url",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "alt_text",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "position",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 0"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "product_variants",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE product_variants (\n  variant_part_number TEXT PRIMARY KEY REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE,\n  parent_part_number  TEXT NOT NULL REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE,\n  UNIQUE (variant_part_number, parent_part_number)\n)",
+            "columns": [
+                {
+                    "name": "variant_part_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "parent_part_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES products(part_number) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "UNIQUE",
+                    "definition": "UNIQUE (variant_part_number, parent_part_number)\n"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "products",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE products (\n  part_number                 TEXT PRIMARY KEY,\n  sap_article_id              INTEGER UNIQUE,\n  barcode                     TEXT UNIQUE,\n  model_code                  TEXT,\n  brand_id                    INTEGER NOT NULL REFERENCES brands(brand_id) ON UPDATE CASCADE ON DELETE RESTRICT,\n  other_brand_name            TEXT,\n  short_description           TEXT,\n  secondary_short_description TEXT,\n  full_description            TEXT,\n  -- legacy columns to be migrated into attributes\n  main_colour_name            TEXT,\n  suitable_age_range          TEXT,\n  sports_size_code            TEXT,\n  country_of_origin_code      CHAR(2),\n  supplier_comments           TEXT,\n  primary_category_id         INTEGER REFERENCES categories(category_id) ON UPDATE CASCADE ON DELETE SET NULL,\n  warranty_id                 INTEGER REFERENCES warranty(warranty_id) ON UPDATE CASCADE ON DELETE SET NULL,\n  dimension_id                INTEGER REFERENCES dimensions(dimension_id) ON UPDATE CASCADE ON DELETE SET NULL,\n  vendor_id                   INTEGER REFERENCES vendors(vendor_id) ON UPDATE CASCADE ON DELETE SET NULL,\n  created_at                  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at                  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  CHECK (length(part_number) > 0)\n)",
+            "columns": [
+                {
+                    "name": "part_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "sap_article_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "barcode",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE"
+                        }
+                    ]
+                },
+                {
+                    "name": "model_code",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "brand_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES brands(brand_id) ON UPDATE CASCADE ON DELETE RESTRICT"
+                        }
+                    ]
+                },
+                {
+                    "name": "other_brand_name",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "short_description",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "secondary_short_description",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "full_description",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "main_colour_name",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "suitable_age_range",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "sports_size_code",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "country_of_origin_code",
+                    "type": "CHAR"
+                },
+                {
+                    "name": "supplier_comments",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "primary_category_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES categories(category_id) ON UPDATE CASCADE ON DELETE SET NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "warranty_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES warranty(warranty_id) ON UPDATE CASCADE ON DELETE SET NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "dimension_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES dimensions(dimension_id) ON UPDATE CASCADE ON DELETE SET NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES vendors(vendor_id) ON UPDATE CASCADE ON DELETE SET NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "CHECK",
+                    "definition": "CHECK (length(part_number) > 0)\n"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "purchase_orders",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE purchase_orders (\n  po_id                   INTEGER PRIMARY KEY AUTOINCREMENT,\n  vendor_id               INTEGER NOT NULL REFERENCES vendors(vendor_id) ON UPDATE CASCADE ON DELETE RESTRICT,\n  po_number               TEXT UNIQUE NOT NULL,\n  order_date              DATE NOT NULL,\n  expected_delivery_date  DATE,\n  incoterms               TEXT,\n  currency_code           CHAR(3),\n  total_amount            NUMERIC NOT NULL,\n  payment_terms           TEXT,\n  shipping_method         TEXT,\n  shipping_address        TEXT,\n  billing_address         TEXT,\n  status                  TEXT DEFAULT 'Pending',\n  created_at              TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at              TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)",
+            "columns": [
+                {
+                    "name": "po_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "vendor_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES vendors(vendor_id) ON UPDATE CASCADE ON DELETE RESTRICT"
+                        }
+                    ]
+                },
+                {
+                    "name": "po_number",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "UNIQUE",
+                            "definition": "UNIQUE "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "order_date",
+                    "type": "DATE",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "expected_delivery_date",
+                    "type": "DATE"
+                },
+                {
+                    "name": "incoterms",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "currency_code",
+                    "type": "CHAR"
+                },
+                {
+                    "name": "total_amount",
+                    "type": "NUMERIC",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "payment_terms",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "shipping_method",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "shipping_address",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "billing_address",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "status",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 'Pending'"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "records",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE records (\n  record_id   INTEGER PRIMARY KEY,\n  file_name   TEXT NOT NULL,\n  row_data    TEXT NOT NULL,\n  processed_at TEXT,\n  created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)",
+            "columns": [
+                {
+                    "name": "record_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "file_name",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "row_data",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "processed_at",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "shipment_tracking",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE shipment_tracking (\n  tracking_event_id INTEGER PRIMARY KEY AUTOINCREMENT,\n  shipment_id       INTEGER NOT NULL REFERENCES shipments(shipment_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  event_timestamp   TIMESTAMP NOT NULL,\n  location          TEXT,\n  status_update     TEXT\n)",
+            "columns": [
+                {
+                    "name": "tracking_event_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "shipment_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES shipments(shipment_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "event_timestamp",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "location",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "status_update",
+                    "type": "TEXT"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "shipments",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE shipments (\n  shipment_id       INTEGER PRIMARY KEY AUTOINCREMENT,\n  po_id             INTEGER NOT NULL REFERENCES purchase_orders(po_id) ON UPDATE CASCADE ON DELETE CASCADE,\n  shipment_date     DATE NOT NULL,\n  carrier_name      TEXT,\n  tracking_number   TEXT,\n  incoterms         TEXT,\n  shipment_status   TEXT DEFAULT 'In Transit',\n  estimated_arrival DATE,\n  actual_arrival    DATE\n)",
+            "columns": [
+                {
+                    "name": "shipment_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "po_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "FOREIGN KEY",
+                            "definition": "REFERENCES purchase_orders(po_id) ON UPDATE CASCADE ON DELETE CASCADE"
+                        }
+                    ]
+                },
+                {
+                    "name": "shipment_date",
+                    "type": "DATE",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "carrier_name",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "tracking_number",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "incoterms",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "shipment_status",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT 'In Transit'"
+                        }
+                    ]
+                },
+                {
+                    "name": "estimated_arrival",
+                    "type": "DATE"
+                },
+                {
+                    "name": "actual_arrival",
+                    "type": "DATE"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "vendors",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE vendors (\n  vendor_id               INTEGER PRIMARY KEY AUTOINCREMENT,\n  legal_entity_name       TEXT NOT NULL,\n  trading_name            TEXT,\n  account_reference       TEXT,\n  sap_supplier_id         TEXT,\n  vendor_status           TEXT,\n  product_category        TEXT,\n  contact_person_name     TEXT,\n  contact_email           TEXT,\n  contact_phone           TEXT,\n  website_url             TEXT,\n  street_address          TEXT,\n  postal_code             TEXT,\n  city                    TEXT,\n  state_province_region   TEXT,\n  country_code            CHAR(2),\n  abn                     TEXT,\n  acn                     TEXT,\n  vat_number              TEXT,\n  eori_number             TEXT,\n  tax_residency_country   CHAR(2),\n  payment_terms           TEXT,\n  incoterms               TEXT,\n  freight_matrix          TEXT,\n  currency_code           CHAR(3),\n  platform_name           TEXT,\n  api_integration_status  TEXT,\n  vendor_manager_name     TEXT,\n  onboarding_source       TEXT,\n  created_at              TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n  updated_at              TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n)",
+            "columns": [
+                {
+                    "name": "vendor_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY AUTOINCREMENT"
+                        }
+                    ]
+                },
+                {
+                    "name": "legal_entity_name",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL"
+                        }
+                    ]
+                },
+                {
+                    "name": "trading_name",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "account_reference",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "sap_supplier_id",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "vendor_status",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "product_category",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "contact_person_name",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "contact_email",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "contact_phone",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "website_url",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "street_address",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "postal_code",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "city",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "state_province_region",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "country_code",
+                    "type": "CHAR"
+                },
+                {
+                    "name": "abn",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "acn",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "vat_number",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "eori_number",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "tax_residency_country",
+                    "type": "CHAR"
+                },
+                {
+                    "name": "payment_terms",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "incoterms",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "freight_matrix",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "currency_code",
+                    "type": "CHAR"
+                },
+                {
+                    "name": "platform_name",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "api_integration_status",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "vendor_manager_name",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "onboarding_source",
+                    "type": "TEXT"
+                },
+                {
+                    "name": "created_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP"
+                        }
+                    ]
+                },
+                {
+                    "name": "updated_at",
+                    "type": "TIMESTAMP",
+                    "constraints": [
+                        {
+                            "type": "DEFAULT",
+                            "definition": "DEFAULT CURRENT_TIMESTAMP\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "warranty",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE warranty (\n  warranty_id     INTEGER PRIMARY KEY,\n  duration_months INTEGER NOT NULL CHECK (duration_months >= 0),\n  warranty_type_code TEXT NOT NULL\n)",
+            "columns": [
+                {
+                    "name": "warranty_id",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "PRIMARY KEY"
+                        }
+                    ]
+                },
+                {
+                    "name": "duration_months",
+                    "type": "INTEGER",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL "
+                        },
+                        {
+                            "type": "CHECK",
+                            "definition": "CHECK (duration_months >= 0)"
+                        }
+                    ]
+                },
+                {
+                    "name": "warranty_type_code",
+                    "type": "TEXT",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "NOT NULL\n"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_attr_category",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_attr_category ON category_attributes(category_id, attribute_id)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_attr_code",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_attr_code ON attributes(code)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_categories_parent",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_categories_parent ON categories(parent_id)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_media_product",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_media_product ON product_media(part_number)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_media_type_pos",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_media_type_pos ON product_media(media_type, position)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_pav_attr_bool",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_pav_attr_bool    ON product_attribute_values(attribute_id, value_bool)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_pav_attr_date",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_pav_attr_date    ON product_attribute_values(attribute_id, value_date)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_pav_attr_decimal",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_pav_attr_decimal ON product_attribute_values(attribute_id, value_decimal)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_pav_attr_int",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_pav_attr_int     ON product_attribute_values(attribute_id, value_int)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_pav_attr_option",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_pav_attr_option  ON product_attribute_values(attribute_id, option_id)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_pav_attr_text",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_pav_attr_text    ON product_attribute_values(attribute_id, value_text)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_pav_product",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_pav_product      ON product_attribute_values(part_number)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_price_lookup",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_price_lookup ON prices(part_number, currency_code, effective_date)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_prices_product_date",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_prices_product_date ON prices(part_number, effective_date DESC)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_product_categories_cat",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_product_categories_cat ON product_categories(category_id)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_product_media_pick",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_product_media_pick ON product_media(part_number, media_type, position, created_at DESC)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_products_barcode",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_products_barcode ON products(barcode)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_products_brand",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_products_brand ON products(brand_id)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_products_model_code",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_products_model_code ON products(model_code)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_products_primary_category",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_products_primary_category ON products(primary_category_id)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_products_sap_article_id",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_products_sap_article_id ON products(sap_article_id)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "idx_variant_parent",
+            "unique": false,
+            "ddl": "CREATE INDEX idx_variant_parent ON product_variants(parent_part_number)"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "uq_attr_option_value_nocase",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX uq_attr_option_value_nocase ON attribute_options(attribute_id, value COLLATE NOCASE)"
+        },
+        {
+            "type": "view",
+            "database": null,
+            "name": "vw_product_catalog",
+            "ddl": "CREATE VIEW vw_product_catalog AS\nSELECT\n  p.part_number, p.model_code, p.barcode, p.sap_article_id,\n  p.short_description, p.secondary_short_description, p.full_description,\n  p.country_of_origin_code, p.supplier_comments,\n  b.brand_name,\n  c.code AS category_code, c.name AS category_name, c.gcc_code AS category_gcc_code,\n  v.legal_entity_name AS vendor_name, v.country_code AS vendor_country,\n  w.warranty_type_code, w.duration_months,\n  d.product_height_cm, d.product_width_cm, d.product_depth_cm,\n  d.package_height_cm, d.package_width_cm, d.package_depth_cm, d.package_gross_weight_kg,\n  (SELECT pm.url FROM product_media pm WHERE pm.part_number=p.part_number AND pm.media_type='image' ORDER BY COALESCE(pm.position,999999) ASC, pm.created_at DESC LIMIT 1) AS image_main_url,\n  (SELECT pm.url FROM product_media pm WHERE pm.part_number=p.part_number AND pm.media_type='youtube' ORDER BY COALESCE(pm.position,999999) ASC, pm.created_at DESC LIMIT 1) AS youtube_url,\n  pr.currency_code, pr.msrp, pr.rrp, pr.retail_price, pr.discount_price, pr.cost_price_ex_tax, pr.effective_date,\n  p.created_at AS product_created_at, p.updated_at AS product_updated_at\nFROM products p\nLEFT JOIN brands     b ON p.brand_id = b.brand_id\nLEFT JOIN categories c ON p.primary_category_id = c.category_id\nLEFT JOIN vendors    v ON p.vendor_id = v.vendor_id\nLEFT JOIN warranty   w ON p.warranty_id = w.warranty_id\nLEFT JOIN dimensions d ON p.dimension_id = d.dimension_id\nLEFT JOIN (SELECT part_number, MAX(effective_date) AS latest_date FROM prices GROUP BY part_number) latest_price\n  ON p.part_number = latest_price.part_number\nLEFT JOIN prices pr ON p.part_number = pr.part_number AND pr.effective_date = latest_price.latest_date",
+            "select": "SELECT\n  p.part_number, p.model_code, p.barcode, p.sap_article_id,\n  p.short_description, p.secondary_short_description, p.full_description,\n  p.country_of_origin_code, p.supplier_comments,\n  b.brand_name,\n  c.code AS category_code, c.name AS category_name, c.gcc_code AS category_gcc_code,\n  v.legal_entity_name AS vendor_name, v.country_code AS vendor_country,\n  w.warranty_type_code, w.duration_months,\n  d.product_height_cm, d.product_width_cm, d.product_depth_cm,\n  d.package_height_cm, d.package_width_cm, d.package_depth_cm, d.package_gross_weight_kg,\n  (SELECT pm.url FROM product_media pm WHERE pm.part_number=p.part_number AND pm.media_type='image' ORDER BY COALESCE(pm.position,999999) ASC, pm.created_at DESC LIMIT 1) AS image_main_url,\n  (SELECT pm.url FROM product_media pm WHERE pm.part_number=p.part_number AND pm.media_type='youtube' ORDER BY COALESCE(pm.position,999999) ASC, pm.created_at DESC LIMIT 1) AS youtube_url,\n  pr.currency_code, pr.msrp, pr.rrp, pr.retail_price, pr.discount_price, pr.cost_price_ex_tax, pr.effective_date,\n  p.created_at AS product_created_at, p.updated_at AS product_updated_at\nFROM products p\nLEFT JOIN brands     b ON p.brand_id = b.brand_id\nLEFT JOIN categories c ON p.primary_category_id = c.category_id\nLEFT JOIN vendors    v ON p.vendor_id = v.vendor_id\nLEFT JOIN warranty   w ON p.warranty_id = w.warranty_id\nLEFT JOIN dimensions d ON p.dimension_id = d.dimension_id\nLEFT JOIN (SELECT part_number, MAX(effective_date) AS latest_date FROM prices GROUP BY part_number) latest_price\n  ON p.part_number = latest_price.part_number\nLEFT JOIN prices pr ON p.part_number = pr.part_number AND pr.effective_date = latest_price.latest_date"
+        },
+        {
+            "type": "view",
+            "database": null,
+            "name": "vw_ps_product_info",
+            "ddl": "CREATE VIEW vw_ps_product_info AS\nWITH color AS (\n  SELECT pav.part_number, COALESCE(ao.label, ao.value) AS color\n  FROM product_attribute_values pav\n  JOIN attributes a ON a.attribute_id = pav.attribute_id AND a.code='color'\n  LEFT JOIN attribute_options ao ON ao.option_id = pav.option_id\n),\nsize AS (\n  SELECT pav.part_number, COALESCE(ao.label, ao.value) AS size\n  FROM product_attribute_values pav\n  JOIN attributes a ON a.attribute_id = pav.attribute_id AND a.code='size'\n  LEFT JOIN attribute_options ao ON ao.option_id = pav.option_id\n),\nmaterial AS (\n  SELECT pav.part_number, COALESCE(ao.label, ao.value, pav.value_text) AS material\n  FROM product_attribute_values pav\n  JOIN attributes a ON a.attribute_id = pav.attribute_id AND a.code='material'\n  LEFT JOIN attribute_options ao ON ao.option_id = pav.option_id\n),\nimg AS (\n  SELECT p.part_number,\n         (SELECT pm.url FROM product_media pm WHERE pm.part_number=p.part_number AND pm.media_type='image'\n          ORDER BY COALESCE(pm.position,999999) ASC, pm.created_at DESC LIMIT 1) AS image_uri\n  FROM products p\n)\nSELECT\n  p.part_number,\n  b.brand_name AS brand,\n  p.model_code AS model,\n  p.short_description AS title,\n  p.full_description AS description,\n  c.code AS category_code,\n  color.color, size.size, material.material,\n  img.image_uri\nFROM products p\nLEFT JOIN brands     b ON b.brand_id = p.brand_id\nLEFT JOIN categories c ON c.category_id = p.primary_category_id\nLEFT JOIN color      ON color.part_number = p.part_number\nLEFT JOIN size       ON size.part_number  = p.part_number\nLEFT JOIN material   ON material.part_number = p.part_number\nLEFT JOIN img        ON img.part_number = p.part_number",
+            "select": "WITH color AS (\n  SELECT pav.part_number, COALESCE(ao.label, ao.value) AS color\n  FROM product_attribute_values pav\n  JOIN attributes a ON a.attribute_id = pav.attribute_id AND a.code='color'\n  LEFT JOIN attribute_options ao ON ao.option_id = pav.option_id\n),\nsize AS (\n  SELECT pav.part_number, COALESCE(ao.label, ao.value) AS size\n  FROM product_attribute_values pav\n  JOIN attributes a ON a.attribute_id = pav.attribute_id AND a.code='size'\n  LEFT JOIN attribute_options ao ON ao.option_id = pav.option_id\n),\nmaterial AS (\n  SELECT pav.part_number, COALESCE(ao.label, ao.value, pav.value_text) AS material\n  FROM product_attribute_values pav\n  JOIN attributes a ON a.attribute_id = pav.attribute_id AND a.code='material'\n  LEFT JOIN attribute_options ao ON ao.option_id = pav.option_id\n),\nimg AS (\n  SELECT p.part_number,\n         (SELECT pm.url FROM product_media pm WHERE pm.part_number=p.part_number AND pm.media_type='image'\n          ORDER BY COALESCE(pm.position,999999) ASC, pm.created_at DESC LIMIT 1) AS image_uri\n  FROM products p\n)\nSELECT\n  p.part_number,\n  b.brand_name AS brand,\n  p.model_code AS model,\n  p.short_description AS title,\n  p.full_description AS description,\n  c.code AS category_code,\n  color.color, size.size, material.material,\n  img.image_uri\nFROM products p\nLEFT JOIN brands     b ON b.brand_id = p.brand_id\nLEFT JOIN categories c ON c.category_id = p.primary_category_id\nLEFT JOIN color      ON color.part_number = p.part_number\nLEFT JOIN size       ON size.part_number  = p.part_number\nLEFT JOIN material   ON material.part_number = p.part_number\nLEFT JOIN img        ON img.part_number = p.part_number"
+        },
+        {
+            "type": "trigger",
+            "database": null,
+            "name": "trg_attributes_updated_at",
+            "ddl": "CREATE TRIGGER trg_attributes_updated_at AFTER UPDATE ON attributes FOR EACH ROW BEGIN UPDATE attributes SET updated_at=CURRENT_TIMESTAMP WHERE attribute_id=NEW.attribute_id; END",
+            "timing": "AFTER",
+            "action": "UPDATE",
+            "table": "attributes",
+            "code": "UPDATE attributes SET updated_at=CURRENT_TIMESTAMP WHERE attribute_id=NEW.attribute_id"
+        },
+        {
+            "type": "trigger",
+            "database": null,
+            "name": "trg_categories_updated_at",
+            "ddl": "CREATE TRIGGER trg_categories_updated_at AFTER UPDATE ON categories FOR EACH ROW BEGIN UPDATE categories SET updated_at=CURRENT_TIMESTAMP WHERE category_id=NEW.category_id; END",
+            "timing": "AFTER",
+            "action": "UPDATE",
+            "table": "categories",
+            "code": "UPDATE categories SET updated_at=CURRENT_TIMESTAMP WHERE category_id=NEW.category_id"
+        },
+        {
+            "type": "trigger",
+            "database": null,
+            "name": "trg_media_updated_at",
+            "ddl": "CREATE TRIGGER trg_media_updated_at      AFTER UPDATE ON product_media FOR EACH ROW BEGIN UPDATE product_media SET updated_at=CURRENT_TIMESTAMP WHERE media_id=NEW.media_id; END",
+            "timing": "AFTER",
+            "action": "UPDATE",
+            "table": "product_media",
+            "code": "UPDATE product_media SET updated_at=CURRENT_TIMESTAMP WHERE media_id=NEW.media_id"
+        },
+        {
+            "type": "trigger",
+            "database": null,
+            "name": "trg_pav_updated_at",
+            "ddl": "CREATE TRIGGER trg_pav_updated_at        AFTER UPDATE ON product_attribute_values FOR EACH ROW BEGIN UPDATE product_attribute_values SET updated_at=CURRENT_TIMESTAMP WHERE part_number=NEW.part_number AND attribute_id=NEW.attribute_id; END",
+            "timing": "AFTER",
+            "action": "UPDATE",
+            "table": "product_attribute_values",
+            "code": "UPDATE product_attribute_values SET updated_at=CURRENT_TIMESTAMP WHERE part_number=NEW.part_number AND attribute_id=NEW.attribute_id"
+        },
+        {
+            "type": "trigger",
+            "database": null,
+            "name": "trg_prices_updated_at",
+            "ddl": "CREATE TRIGGER trg_prices_updated_at   AFTER UPDATE ON prices   FOR EACH ROW BEGIN UPDATE prices   SET updated_at=CURRENT_TIMESTAMP WHERE price_id=NEW.price_id; END",
+            "timing": "AFTER",
+            "action": "UPDATE",
+            "table": "prices",
+            "code": "UPDATE prices   SET updated_at=CURRENT_TIMESTAMP WHERE price_id=NEW.price_id"
+        },
+        {
+            "type": "trigger",
+            "database": null,
+            "name": "trg_products_updated_at",
+            "ddl": "CREATE TRIGGER trg_products_updated_at AFTER UPDATE ON products FOR EACH ROW BEGIN UPDATE products SET updated_at=CURRENT_TIMESTAMP WHERE part_number=NEW.part_number; END",
+            "timing": "AFTER",
+            "action": "UPDATE",
+            "table": "products",
+            "code": "UPDATE products SET updated_at=CURRENT_TIMESTAMP WHERE part_number=NEW.part_number"
+        },
+        {
+            "type": "trigger",
+            "database": null,
+            "name": "trg_vendors_updated_at",
+            "ddl": "CREATE TRIGGER trg_vendors_updated_at   AFTER UPDATE ON vendors    FOR EACH ROW BEGIN UPDATE vendors    SET updated_at=CURRENT_TIMESTAMP WHERE vendor_id=NEW.vendor_id; END",
+            "timing": "AFTER",
+            "action": "UPDATE",
+            "table": "vendors",
+            "code": "UPDATE vendors    SET updated_at=CURRENT_TIMESTAMP WHERE vendor_id=NEW.vendor_id"
+        }
+    ]
+}
